@@ -1,0 +1,260 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.207,
+          31.902
+        ]
+      },
+      "properties": {
+        "OBJECTID": 1,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.261,
+          32.224
+        ]
+      },
+      "properties": {
+        "OBJECTID": 2,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.095,
+          31.534
+        ]
+      },
+      "properties": {
+        "OBJECTID": 3,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.016,
+          32.31
+        ]
+      },
+      "properties": {
+        "OBJECTID": 4,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.303,
+          32.276
+        ]
+      },
+      "properties": {
+        "OBJECTID": 5,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 6,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.187,
+          31.705
+        ]
+      },
+      "properties": {
+        "OBJECTID": 6,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 7,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.251,
+          32.079
+        ]
+      },
+      "properties": {
+        "OBJECTID": 7,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 8,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.471,
+          31.741
+        ]
+      },
+      "properties": {
+        "OBJECTID": 8,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 9,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.057,
+          32.028
+        ]
+      },
+      "properties": {
+        "OBJECTID": 9,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.287,
+          31.852
+        ]
+      },
+      "properties": {
+        "OBJECTID": 10,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.207,
+          31.902
+        ]
+      },
+      "properties": {
+        "OBJECTID": 11,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 12,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.261,
+          32.224
+        ]
+      },
+      "properties": {
+        "OBJECTID": 12,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 13,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.095,
+          31.534
+        ]
+      },
+      "properties": {
+        "OBJECTID": 13,
+        "Near_by": "westron"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 14,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.016,
+          32.31
+        ]
+      },
+      "properties": {
+        "OBJECTID": 14,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 15,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.303,
+          32.276
+        ]
+      },
+      "properties": {
+        "OBJECTID": 15,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 16,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.187,
+          31.705
+        ]
+      },
+      "properties": {
+        "OBJECTID": 16,
+        "Near_by": "Money Gram"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 17,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          35.251,
+          32.079
+        ]
+      },
+      "properties": {
+        "OBJECTID": 17,
+        "Near_by": "westron"
+      }
+    }
+  ]
+}

@@ -63,7 +63,7 @@ if (location.protocol !== "https:" && location.hostname !== "localhost" && locat
 
 const map = L.map('map').setView([32.0, 35.3], 11);
 
-// خريطة Esri World Street
+// خريطة Esri
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
   attribution: '&copy; Esri & OpenStreetMap contributors',
   maxZoom: 19
@@ -75,7 +75,7 @@ let routingControl = null;
 let nearestMarker = null;
 let currentFiltered = [];
 
-// تحميل المحافظات
+// تحميل الطبقات
 fetch('Governarates_1.geojson')
   .then(res => res.json())
   .then(data => {
@@ -89,7 +89,6 @@ fetch('Governarates_1.geojson')
     map.fitBounds(layer.getBounds());
   });
 
-// تحميل المكاتب
 fetch('Money_Changers_WestBank.json')
   .then(res => res.json())
   .then(data => {
@@ -155,7 +154,6 @@ function startNavigation(destinationLatLng) {
     const start = L.latLng(position.coords.latitude, position.coords.longitude);
     const end = L.latLng(destinationLatLng[0], destinationLatLng[1]);
 
-    map.setView(start, 13);
     if (routingControl) map.removeControl(routingControl);
 
     routingControl = L.Routing.control({
@@ -172,12 +170,17 @@ function startNavigation(destinationLatLng) {
       })
     }).addTo(map);
 
+    map.fitBounds(L.latLngBounds([start, end]).pad(0.2));
+
+    // فتح Google Maps للملاحة الفعلية
+    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${start.lat},${start.lng}&destination=${end.lat},${end.lng}&travelmode=driving`;
+    window.open(gmapsUrl, '_blank');
+
   }, () => {
     alert("تعذر تحديد الموقع.");
   });
 }
 
-// أقرب مكتب + مسار
 document.getElementById('nearestBtn').addEventListener('click', function () {
   if (!navigator.geolocation) {
     alert("المتصفح لا يدعم تحديد الموقع.");
@@ -203,31 +206,18 @@ document.getElementById('nearestBtn').addEventListener('click', function () {
       let coords = nearestFeature.geometry.coordinates;
       let target = L.latLng(coords[1], coords[0]);
 
-      if (nearestMarker) map.removeLayer(nearestMarker);
       if (routingControl) map.removeControl(routingControl);
+      if (nearestMarker) map.removeLayer(nearestMarker);
 
       nearestMarker = L.marker(target).addTo(map)
         .bindPopup(`أقرب مكتب<br>المسافة: ${(minDistance / 1000).toFixed(2)} كم`)
         .openPopup();
 
-      routingControl = L.Routing.control({
-        waypoints: [userLoc, target],
-        routeWhileDragging: false,
-        language: 'ar',
-        showAlternatives: false,
-        lineOptions: {
-          styles: [{ color: 'green', opacity: 0.9, weight: 5 }]
-        },
-        createMarker: () => null,
-        router: L.Routing.osrmv1({
-          serviceUrl: 'https://router.project-osrm.org/route/v1'
-        })
-      }).addTo(map);
-
-      map.fitBounds(L.latLngBounds([userLoc, target]).pad(0.3));
+      // رسم المسار وفتح الملاحة
+      startNavigation([coords[1], coords[0]]);
     }
 
-  }, () => {
+  }, function () {
     alert("تعذر تحديد الموقع.");
   });
 });
@@ -244,7 +234,7 @@ document.getElementById('locateBtn').addEventListener('click', function () {
     map.setView([lat, lng], 14);
     L.marker([lat, lng]).addTo(map).bindPopup("موقعك الحالي").openPopup();
   }, () => {
-    alert("تعذر تحديد الموقع.");
+    alert("تعذر تحديد الموقع الحالي.");
   });
 });
 

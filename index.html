@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>خريطة مكاتب الصرافة + أقرب مكتب + ملاحة</title>
+  <title>خريطة مكاتب الصرافة + نظام ملاحة</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#d32f2f">
 
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Leaflet Routing -->
+  <!-- Routing -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
   <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 
@@ -63,7 +63,7 @@ if (location.protocol !== "https:" && location.hostname !== "localhost" && locat
 
 const map = L.map('map').setView([32.0, 35.3], 11);
 
-// ✅ خريطة Esri World Street Map
+// خريطة Esri World Street
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
   attribution: '&copy; Esri & OpenStreetMap contributors',
   maxZoom: 19
@@ -75,6 +75,7 @@ let routingControl = null;
 let nearestMarker = null;
 let currentFiltered = [];
 
+// تحميل المحافظات
 fetch('Governarates_1.geojson')
   .then(res => res.json())
   .then(data => {
@@ -88,6 +89,7 @@ fetch('Governarates_1.geojson')
     map.fitBounds(layer.getBounds());
   });
 
+// تحميل المكاتب
 fetch('Money_Changers_WestBank.json')
   .then(res => res.json())
   .then(data => {
@@ -119,12 +121,22 @@ function showFilteredPoints(filterValue) {
     },
     onEachFeature: function (feature, layer) {
       let near = feature.properties.Near_by || "غير معروف";
-      let popupContent = `<b>قريب من:</b> ${near}`;
+      let popupContent = `<b>قريب من:</b> ${near}<br><button class="navigate-btn">ابدأ الملاحة</button>`;
       layer.bindPopup(popupContent);
+
+      layer.on('popupopen', function () {
+        let btn = layer.getPopup().getElement().querySelector('.navigate-btn');
+        if (btn) {
+          btn.onclick = function () {
+            let coords = feature.geometry.coordinates;
+            startNavigation([coords[1], coords[0]]);
+          };
+        }
+      });
     }
   }).addTo(map);
 
-  if (allPointsLayer && currentFiltered.length > 0) {
+  if (currentFiltered.length > 0) {
     map.fitBounds(allPointsLayer.getBounds());
   }
 }
@@ -133,6 +145,39 @@ document.getElementById('nearbySelect').addEventListener('change', function () {
   showFilteredPoints(this.value);
 });
 
+function startNavigation(destinationLatLng) {
+  if (!navigator.geolocation) {
+    alert("المتصفح لا يدعم تحديد الموقع.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(function (position) {
+    const start = L.latLng(position.coords.latitude, position.coords.longitude);
+    const end = L.latLng(destinationLatLng[0], destinationLatLng[1]);
+
+    map.setView(start, 13);
+    if (routingControl) map.removeControl(routingControl);
+
+    routingControl = L.Routing.control({
+      waypoints: [start, end],
+      routeWhileDragging: false,
+      language: 'ar',
+      showAlternatives: false,
+      lineOptions: {
+        styles: [{ color: 'green', opacity: 0.9, weight: 5 }]
+      },
+      createMarker: () => null,
+      router: L.Routing.osrmv1({
+        serviceUrl: 'https://router.project-osrm.org/route/v1'
+      })
+    }).addTo(map);
+
+  }, () => {
+    alert("تعذر تحديد الموقع.");
+  });
+}
+
+// أقرب مكتب + مسار
 document.getElementById('nearestBtn').addEventListener('click', function () {
   if (!navigator.geolocation) {
     alert("المتصفح لا يدعم تحديد الموقع.");
@@ -158,8 +203,8 @@ document.getElementById('nearestBtn').addEventListener('click', function () {
       let coords = nearestFeature.geometry.coordinates;
       let target = L.latLng(coords[1], coords[0]);
 
-      if (routingControl) map.removeControl(routingControl);
       if (nearestMarker) map.removeLayer(nearestMarker);
+      if (routingControl) map.removeControl(routingControl);
 
       nearestMarker = L.marker(target).addTo(map)
         .bindPopup(`أقرب مكتب<br>المسافة: ${(minDistance / 1000).toFixed(2)} كم`)
@@ -182,7 +227,7 @@ document.getElementById('nearestBtn').addEventListener('click', function () {
       map.fitBounds(L.latLngBounds([userLoc, target]).pad(0.3));
     }
 
-  }, function () {
+  }, () => {
     alert("تعذر تحديد الموقع.");
   });
 });
@@ -198,8 +243,8 @@ document.getElementById('locateBtn').addEventListener('click', function () {
     let lng = position.coords.longitude;
     map.setView([lat, lng], 14);
     L.marker([lat, lng]).addTo(map).bindPopup("موقعك الحالي").openPopup();
-  }, function () {
-    alert("تعذر تحديد الموقع الحالي.");
+  }, () => {
+    alert("تعذر تحديد الموقع.");
   });
 });
 
